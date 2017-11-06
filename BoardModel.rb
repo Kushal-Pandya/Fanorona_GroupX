@@ -3,9 +3,9 @@ class BoardModel
         @stones = nil
         @rows= rows
         @columns = columns
-        rules = nil
-        subject = nil
-        select_stone = nil
+        @rules = nil
+        @subject = nil
+        @select_stone = nil
     end
     def get_stone(row, column)
     end
