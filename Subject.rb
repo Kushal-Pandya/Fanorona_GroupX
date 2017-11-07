@@ -10,6 +10,7 @@ class Subject
    def get_state()
        return @state
    end
+   
    def set_state()
    end
 end
