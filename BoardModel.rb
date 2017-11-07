@@ -1,7 +1,7 @@
 class BoardModel
     def initialize(rows, columns)
         @stones = nil
-        @rows= rows
+        @rows = rows
         @columns = columns
         @rules = nil
         @subject = nil

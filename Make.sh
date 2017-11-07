@@ -1,4 +1,4 @@
 #!/bin/sh
 for f in *.rb; do
-    ruby "$f"
+    ruby -c "$f"
 done
