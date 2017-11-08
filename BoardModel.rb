@@ -26,20 +26,20 @@ class BoardModel
             @stones << Stone.new(Colour::Black, 1, 0, nil)
             @stones << Stone.new(nil, 1, 1, nil)
             @stones << Stone.new(Colour::White, 1, 2, nil)
-            #puts "color:" + Colour::Black.to_s + " Y:" + 1.to_s + " X:" + 0.to_s
-            #puts "color:" + nil.to_s + " Y:" + 1.to_s + " X:" + 1.to_s
-            #puts "color:" + Colour::White.to_s + " Y:" + 1.to_s + " X:" + 2.to_s
+            puts "color:" + Colour::Black.to_s + " Y:" + 1.to_s + " X:" + 0.to_s
+            puts "color:" + nil.to_s + " Y:" + 1.to_s + " X:" + 1.to_s
+            puts "color:" + Colour::White.to_s + " Y:" + 1.to_s + " X:" + 2.to_s
         elsif(@columns == 5)
-            for j in 0..@columns do
+            for j in 0..@columns-1 do
                 stone_colour = nil
                 
                 if (j == 0 || j == 3) 
-                    stone_colour = Colour_white
+                    stone_colour = Colour::white
                 elsif(j == 1 || j == 4)
                     stone_colour = Colour::Black
                 end   
                 @stones << Stone.new(stone_colour, middle, j, nil)
-                #puts "color:" + stone_colour.to_s + " Y:" + middle.to_s + " X:" + j.to_s
+                puts "color:" + stone_colour.to_s + " Y:" + middle.to_s + " X:" + j.to_s
             end
         elsif(@columns == 9)
             for j in 0..@columns-1 do
