@@ -1,5 +1,6 @@
 require_relative "Colour"
 class Stone
+   attr_accessor :colour, :row, :column
    def initialize(colour, row, column, observer)
       @colour = colour
       @row = row

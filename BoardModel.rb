@@ -1,7 +1,22 @@
 require_relative "Move_outcome"
 require_relative "Colour"
 require_relative "Stone"
+
+#Checks if a value should be a white or black column in board (should only be 
+#used for the middle row)
+#
+#If it belongs to white or black, returns that colour,
+#else returns nil.
+def which_colour?(white_columns, black_columns, value)
+    if(white_columns.include?(value))
+        return Colour::White
+    else 
+        return (black_columns.include?(value)) ? Colour::Black : nil
+    end
+end
 class BoardModel
+    #will make a board of any size, but has to deal with boards of size, 3x3,
+    #5x5 or 5x9 (5 rows, 9 columns).
     def initialize(rows, columns)
         @stones = Array.new
         @rows = rows
@@ -10,62 +25,53 @@ class BoardModel
         @subject = nil
         @select_stone = nil
         
-        middle = ((@rows.to_f / 2) - 1).floor
-        #board sizes: 3X3, 5X9, 5X5
+        middle = (@rows / 2) - 1
         
-        #TODO: initialize every stone into list of 'stones' part of BoardModel
         for i in 0..middle do
             for j in 0..@columns-1 do
-                puts "color:" + Colour::White.to_s + " Y:" + i.to_s + " X:" + j.to_s 
-                @stones << Stone.new(Colour::White, i, j, nil)
+                @stones.push( Stone.new(Colour::Black, i, j, nil))
             end
         end
-        middle = middle + 1
-        puts ""
+
         if(@columns == 3)
-            @stones << Stone.new(Colour::Black, 1, 0, nil)
-            @stones << Stone.new(nil, 1, 1, nil)
-            @stones << Stone.new(Colour::White, 1, 2, nil)
-            puts "color:" + Colour::Black.to_s + " Y:" + 1.to_s + " X:" + 0.to_s
-            puts "color:" + nil.to_s + " Y:" + 1.to_s + " X:" + 1.to_s
-            puts "color:" + Colour::White.to_s + " Y:" + 1.to_s + " X:" + 2.to_s
+            #push three stones into stones array
+            @stones.push( Stone.new(Colour::White, 1, 0, nil))
+            @stones.push( Stone.new(nil, 1, 1, nil)) 
+            @stones.push( Stone.new(Colour::Black, 1, 2, nil))
         elsif(@columns == 5)
             for j in 0..@columns-1 do
-                stone_colour = nil
-                
-                if (j == 0 || j == 3) 
-                    stone_colour = Colour::white
-                elsif(j == 1 || j == 4)
-                    stone_colour = Colour::Black
-                end   
-                @stones << Stone.new(stone_colour, middle, j, nil)
-                puts "color:" + stone_colour.to_s + " Y:" + middle.to_s + " X:" + j.to_s
+                @stones.push( Stone.new( which_colour?([1, 4], [0, 3], j), 
+                    middle+1, j, nil))           
             end
         elsif(@columns == 9)
             for j in 0..@columns-1 do
-                stone_colour = nil;
-                
-                if(j == 0 || j == 2 || j == 5 || j == 7) 
-                    stone_colour = Colour::White 
-                elsif (j == 1 || j == 3 || j == 6 || j == 8) 
-                    stone_colour = Colour::Black 
-                end
-                    
-                @stones << Stone.new(stone_colour, middle, j, nil)
-                puts "color:" + Colour::Black.to_s + " Y:" + middle.to_s + " X:" + j.to_s
+                @stones.push( 
+                    Stone.new( which_colour?([1, 3, 6, 8], [0, 2, 5, 7], j), 
+                    middle+1, j, nil))
             end
         end    
-        puts ""
-        for i in middle + 1..@rows-1
+        for i in middle + 2..@rows-1
             for j in 0..@columns-1
-                @stones << Stone.new(Colour::Black, i, j, nil)
-                puts "color:" + Colour::Black.to_s + " Y:" + i.to_s + " X:" + j.to_s
+                @stones.push( Stone.new(Colour::White, i, j, nil))
             end
         end
+        
+        #Some code to test if the stones are set properly
+        #for stone in @stones
+            #puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
+            #" Column: " + stone.column.to_s + "\n\n"
+        #end
     end
     def get_stone(row, column)
+        for stone in @stones
+            if(stone.row == row && stone.column == column)
+                return stone
+            end
+        end
+        return nil
     end
     def select_stone(row, column)
+        @select_stone = get_stone(row, column)
     end
     def move_stone(row, column)
     end
@@ -78,6 +84,7 @@ class FanoronaBoardModel < BoardModel
     end
 end
 
-#puts ( ((5.to_f/2) - 1).ceil).to_s
+#new_obj = BoardModel.new(5,9)
+#thing = new_obj.get_stone(1, 4)
 
-new_obj = BoardModel.new(5,9)
+#puts thing.colour.to_s + " " + thing.row.to_s + " " + thing.column.to_s
