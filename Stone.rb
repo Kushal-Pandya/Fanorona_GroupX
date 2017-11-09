@@ -8,5 +8,7 @@ class Stone
       @observer = observer
    end
    def move(row, column)
+      @row = row
+      @column = column
    end
 end

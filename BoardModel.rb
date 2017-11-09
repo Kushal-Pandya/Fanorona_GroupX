@@ -1,18 +1,13 @@
-require_relative "Move_outcome"
+require_relative "MoveOutcome"
 require_relative "Colour"
 require_relative "Stone"
 
-#Checks if a value should be a white or black column in board (should only be 
-#used for the middle row)
-#
-#If it belongs to white or black, returns that colour,
-#else returns nil.
-def which_colour?(white_columns, black_columns, value)
-    if(white_columns.include?(value))
-        return Colour::White
-    else 
-        return (black_columns.include?(value)) ? Colour::Black : nil
-    end
+#Checks if a value should be a white or black column in board based on the 
+#array of columns that should be white. If it belongs to the array of white 
+#columns, returns white, otherwise returns the colour black.
+#Returns white or black
+def which_colour?(white_columns, value)
+    return (white_columns.include?(value)) ? Colour::White : Colour::Black
 end
 class BoardModel
     #will make a board of any size, but has to deal with boards of size, 3x3,
@@ -33,21 +28,20 @@ class BoardModel
             end
         end
 
+        #whichever space is in the center does not receive a stone,
+        #if columns is 3, it's at 1, 5, it is 2, and 9 it is 4.
         if(@columns == 3)
-            #push three stones into stones array
             @stones.push( Stone.new(Colour::White, 1, 0, nil))
-            @stones.push( Stone.new(nil, 1, 1, nil)) 
             @stones.push( Stone.new(Colour::Black, 1, 2, nil))
         elsif(@columns == 5)
-            for j in 0..@columns-1 do
-                @stones.push( Stone.new( which_colour?([1, 4], [0, 3], j), 
-                    middle+1, j, nil))           
+            [0, 1, 3, 4].each do |j|
+                @stones.push( 
+                    Stone.new( which_colour?([1, 4], j), middle+1, j, nil))   
             end
         elsif(@columns == 9)
-            for j in 0..@columns-1 do
-                @stones.push( 
-                    Stone.new( which_colour?([1, 3, 6, 8], [0, 2, 5, 7], j), 
-                    middle+1, j, nil))
+            [0, 1, 2, 3, 5, 6, 7, 8].each do |j|
+                @stones.push(
+                    Stone.new( which_colour?([1, 3, 6, 8], j), middle+1, j, nil))
             end
         end    
         for i in middle + 2..@rows-1
@@ -55,11 +49,10 @@ class BoardModel
                 @stones.push( Stone.new(Colour::White, i, j, nil))
             end
         end
-        
         #Some code to test if the stones are set properly
         #for stone in @stones
-            #puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
-            #" Column: " + stone.column.to_s + "\n\n"
+        #    puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
+        #    " Column: " + stone.column.to_s + "\n\n"
         #end
     end
     def get_stone(row, column)
@@ -71,11 +64,34 @@ class BoardModel
         return nil
     end
     def select_stone(row, column)
-        @select_stone = get_stone(row, column)
+        #I need Rulebook to be working before this can be done
+        #outcome = rules.validateSelection(row, column)
+        #if(outcome == MoveOutcome::Valid_selection)
+            @select_stone = get_stone(row, column)
+        #elsif(outcome == MoveOutcome::Invalid_selection)
+            #@select_stone = nil
+        #return outcome
     end
     def move_stone(row, column)
+        outcome = rules.validate_move(row, column)
+        
+        if(outcome == MoveOutcome::Valid_move)
+            @select_stone.move(row, column)
+        end
+        return outcome
     end
     def capture_stone(row, column)
+        outcome = rules.validate_capture(row, column)
+        
+        if(outcome == MoveOutcome::Valid_capture)
+            for stone in @stones
+                if(stone.row == row && stone.column == column)
+                    @stones.delete(stone)
+                end
+            end
+            @select_stone.move(row, column)
+        end
+        return outcome
     end
 end
 
