@@ -1,3 +1,4 @@
+
 class Observer
    def initialize(subject)
       @subject = subject
