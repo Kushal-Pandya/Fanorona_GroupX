@@ -105,6 +105,7 @@ class RuleBook
                 end
             end
 
+      end
         return MoveOutcome::Invalid_capture
     end
 

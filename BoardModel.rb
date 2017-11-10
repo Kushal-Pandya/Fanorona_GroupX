@@ -1,6 +1,7 @@
 require_relative "MoveOutcome"
 require_relative "Colour"
 require_relative "Stone"
+require_relative "RuleBook"
 
 class FanaronaBoardModel
     #Checks if a value should be a white or black column in board based on the 
@@ -12,11 +13,11 @@ class FanaronaBoardModel
     end
     #will make a board of any size, but has to deal with boards of size, 3x3,
     #5x5 or 5x9 (5 rows, 9 columns).
-    def initialize(rows, columns, ruleBook)
+    def initialize(rows, columns)
         @stones = Array.new
         @rows = rows
         @columns = columns
-        @rules = ruleBook
+        @rules = RuleBook.new(@stones)
         @subject = nil
         @select_stone = nil
         reset_stones()
@@ -39,24 +40,28 @@ class FanaronaBoardModel
         end
     end
     
-    def update_stone_in_list(row1, col1, row2, col2)
+    def update_stone_in_list(row1, col_1, row2, col2)
         for stone in @stones
-            if(stone.row == row1 && stone.column == col1)
+            if(stone.row == row1 && stone.column == col_1)
                 stone.move(row2, col2)
             end
         end
     end
     
     def select_stone(row, column)
-        if(@rules.validateSelection(row, column) == MoveOutcome::Valid_selection)
-            @select_stone = get_stone(row, column)
+        @select_stone = get_stone(row, colour)
+        if(@rules.validateSelection(row, column, @select_stone.colour) ==
+            MoveOutcome::Valid_selection)
             return MoveOutcome::Valid_selection
-        end    
+        else
+            @select_stone = nil
+        end
         return MoveOutcome::Invalid_selection
     end
     
     def move_stone(row, column)
-        if(@rules.validate_move(row, column) == MoveOutcome::Valid_move)
+        if(@rules.validate_move(@select_stone.row, @select_stone.column,
+                row, column) == MoveOutcome::Valid_move)
             update_stone_in_list(@select_stone.row, @select_stone.column, row, column)
             @select_stone = nil
             return MoveOutcome::Valid_move
@@ -65,7 +70,9 @@ class FanaronaBoardModel
     end
     
     def capture_stone(row, column)
-        if(@rules.validate_capture(row, column) == MoveOutcome::Valid_capture)
+        if(@rules.validate_capture(@select_stone.row, @select_stone.column, 
+                row, column, @select_stone.colour) == 
+                MoveOutcome::Valid_capture)
             delete_stone(row, column)
             update_stone_in_list(@select_stone.row, @select_stone.column, row, column)
             @select_stone = nil
@@ -112,5 +119,5 @@ class FanaronaBoardModel
     end
 end
 
-new_obj = FanaronaBoardModel.new(5,9, nil)
+new_obj = FanaronaBoardModel.new(5,9)
 #thing = new_obj.get_stone(1, 4)
