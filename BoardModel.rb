@@ -36,26 +36,28 @@ class FanaronaBoardModel
             end
         end
     end
+    def update_stone_in_list(row1, col1, row2, col2)
+        for stone in @stones
+            if(stone.row == row1 && stone.column == col1)
+                stone.move(row2, col2)
+            end
+        end
+    end
     def select_stone(row, column)
-        #I need Rulebook to be working before this can be done
-        #outcome = rules.validateSelection(row, column)
-        #if(outcome == MoveOutcome::Valid_selection)
+        outcome = rules.validateSelection(row, column)
+        
+        if(outcome == MoveOutcome::Valid_selection)
             @select_stone = get_stone(row, column)
-        #elsif(outcome == MoveOutcome::Invalid_selection)
-            #@select_stone = nil
-        #return outcome
+        else    
+            @select_stone = nil
+        return outcome
     end
     def move_stone(row, column)
         outcome = rules.validate_move(row, column)
         
         if(outcome == MoveOutcome::Valid_move)
-            #move stone in array
-            prev_row = @select_stone.row
-            prev_column = @select_stone.column
-            change_select_stone(row, column)
-            #move stone that has been selected (due to pass by value)
-            @select_stone.move(row, column)
-            delete_stone(prev_row, prev_column)
+            update_stone_in_list(@select_stone.row, @select_stone.column, row, column)
+            @select_stone = nil
         end
         return outcome
     end
@@ -63,15 +65,9 @@ class FanaronaBoardModel
         outcome = rules.validate_capture(row, column)
         
         if(outcome == MoveOutcome::Valid_capture)
-            for stone in @stones
-                if(stone.row == row && stone.column == column)
-                    @stones.delete(stone)
-                end
-            end
-            prev_row = @select_stone.row
-            prev_column = @select_stone.column
-            @select_stone.move(row, column)
-            delete_stone(prev_row, prev_column)
+            delete_stone(row, column)
+            update_stone_in_list(@select_stone.row, @select_stone.column, row, column)
+            @select_stone = nil
         end
         return outcome
     end
