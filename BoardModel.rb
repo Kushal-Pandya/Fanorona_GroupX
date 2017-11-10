@@ -4,6 +4,7 @@ require_relative "Stone"
 require_relative "RuleBook"
 
 class FanaronaBoardModel
+    attr_accessor :rows, :columns
     #Checks if a value should be a white or black column in board based on the 
     #array of columns that should be white. If it belongs to the array of white 
     #columns, returns white, otherwise returns the colour black.
