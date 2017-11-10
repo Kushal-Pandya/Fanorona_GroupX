@@ -1,4 +1,4 @@
-class Outcome
+class MoveOutcome
     Valid_move = 0
     Valid_capture = 1
     Valid_selection = 2

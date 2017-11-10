@@ -14,7 +14,7 @@ class RuleBook
     def validate_selection(row, column, userColour)
 
         #check if user has selected its own stone or empty space
-        stoneSelected = self.class.get_stone(row, column)
+        stoneSelected = get_stone(row, column)
         if (stoneSelected == nil || stoneSelected.colour != userColour)
             return MoveOutcome::Invalid_selection
         end
@@ -24,13 +24,13 @@ class RuleBook
     def validate_move(srcRow, srcColumn, destRow, destColumn)
 
         #check first if user is not moving to occupied space
-        stoneSelected = self.class.get_stone(destRow, destColumn)
+        stoneSelected =   get_stone(destRow, destColumn)
         if (stoneSelected != nil)
             return MoveOutcome::Invalid_move
         end
 
         # Next check if move is a valid adjacent move
-        if (!self.class.is_adjacent?(srcRow, srcColumn, destRow, destColumn))
+        if (!  is_adjacent?(srcRow, srcColumn, destRow, destColumn))
             return MoveOutcome::Invalid_move
         end
 
@@ -45,73 +45,74 @@ class RuleBook
         if (srcColumn == destColumn)
             if (srcRow+1 == destRow || srcRow-1 == destRow)
                 # checking towards stone
-                if (self.class.get_stone(destRow+1, destColumn).colour != userColour)
+                if (  get_stone(destRow+1, destColumn).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (self.class.get_stone(destRow-1, destColumn).colour != userColour)
+                elsif (  get_stone(destRow-1, destColumn).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             end
         elsif (srcRow == destRow) #moved up or down
             if (srcColumn+1 == destColumn || srcColumn-1 == destColumn)
                 # checking towards stone
-                if (self.class.get_stone(destRow, destColumn+1).colour != userColour)
+                if (  get_stone(destRow, destColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (self.class.get_stone(destRow, destColumn-1).colour != userColour)
+                elsif (  get_stone(destRow, destColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             end
         end
 
         # If its a strong intersection, need to check diagonally too
-        if (self.class.is_strong_intersection?(srcRow, srcColumn))
+        if (  is_strong_intersection?(srcRow, srcColumn))
 
             # check if stone has moved top-right
             if (srcRow+1 == destRow && srcColumn+1 == destColumn)
                 #check toward stone
-                if (self.class.get_stone(destRow+1, destColumn+1).colour != userColour)
+                if (  get_stone(destRow+1, destColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (self.class.get_stone(srcRow-1, srcColumn-1).colour != userColour)
+                elsif (  get_stone(srcRow-1, srcColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             # check if stone has moved bottom-right
             elsif (srcRow+1 == destRow && srcColumn-1 == destColumn)
                 #check toward stone
-                if (self.class.get_stone(destRow+1, destColumn-1).colour != userColour)
+                if (  get_stone(destRow+1, destColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (self.class.get_stone(srcRow-1, srcColumn+1).colour != userColour)
+                elsif (  get_stone(srcRow-1, srcColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             # check if stone has moved bottom-left
             elsif (srcRow-1 == destRow && srcColumn-1 == destColumn)
                 #check toward stone
-                if (self.class.get_stone(destRow-1, destColumn-1).colour != userColour)
+                if (  get_stone(destRow-1, destColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (self.class.get_stone(srcRow+1, srcColumn+1).colour != userColour)
+                elsif (  get_stone(srcRow+1, srcColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             # check if stone has moved top-left
             elsif (srcRow-1 == destRow && srcColumn+1 == destColumn)
                 #check toward stone
-                if (self.class.get_stone(destRow-1, destColumn+1).colour != userColour)
+                if (  get_stone(destRow-1, destColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (self.class.get_stone(srcRow+1, srcColumn-1).colour != userColour)
+                elsif (  get_stone(srcRow+1, srcColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             end
 
-      end
+   end
         return MoveOutcome::Invalid_capture
     end
 
     # get_stone method copied verbatim from BoardModel class
-    def self.get_stone(row, column)
+    def get_stone(row, column)
         for stone in @stones
+      
             if(stone.row == row && stone.column == column)
                 return stone
             end
@@ -121,7 +122,7 @@ class RuleBook
 
     # check here that the move is valid, horizontally, vertically, or diagonally 
     # returns True if adjacent, false otherwise
-    def self.is_adjacent?(srcRow, srcColumn, destRow, destColumn)
+    def   is_adjacent?(srcRow, srcColumn, destRow, destColumn)
 
         # if columns are the same then moved left or right
         if (srcColumn == destColumn)
@@ -135,7 +136,7 @@ class RuleBook
         end
 
         # If its a strong intersection, need to check diagonally too
-        if (self.class.is_strong_intersection?(srcRow, srcColumn))
+        if (  is_strong_intersection?(srcRow, srcColumn))
 
             # Has moved diagonally top-right/bottom-right
             # thus, column should be top or bottom
@@ -160,7 +161,7 @@ class RuleBook
     end
 
     # Determine if intersection is strong or weak by checking parity
-    def self.is_strong_intersection?(row, column)
+    def   is_strong_intersection?(row, column)
         return((row+column).even?)
     end
 end

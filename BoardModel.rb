@@ -4,7 +4,7 @@ require_relative "Stone"
 require_relative "RuleBook"
 
 class FanaronaBoardModel
-    attr_accessor :rows, :columns
+    attr_accessor :rows, :columns, :stones
     #Checks if a value should be a white or black column in board based on the 
     #array of columns that should be white. If it belongs to the array of white 
     #columns, returns white, otherwise returns the colour black.
@@ -50,14 +50,17 @@ class FanaronaBoardModel
     end
     
     def select_stone(row, column)
-        @select_stone = get_stone(row, colour)
-        if(@rules.validateSelection(row, column, @select_stone.colour) ==
+        @select_stone = get_stone(row, column)
+        if(@select_stone == nil)
+            return MoveOutcome::Invalid_selection
+        end
+            
+        if(@rules.validate_selection(row, column, @select_stone.colour) ==
             MoveOutcome::Valid_selection)
             return MoveOutcome::Valid_selection
         else
-            @select_stone = nil
+            return MoveOutcome::Invalid_selection
         end
-        return MoveOutcome::Invalid_selection
     end
     
     def move_stone(row, column)
@@ -113,12 +116,17 @@ class FanaronaBoardModel
             end
         end
         #Some code to test if the stones are set properly
-        #for stone in @stones
-        #   puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
-        #    " Column: " + stone.column.to_s + "\n\n"
-        #end
+        for stone in @stones
+           puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
+            " Column: " + stone.column.to_s + "\n\n"
+        end
     end
 end
 
 new_obj = FanaronaBoardModel.new(5,9)
+
+puts new_obj.select_stone(2,3).to_s
+
+puts new_obj.capture_stone(2,2).to_s
+
 #thing = new_obj.get_stone(1, 4)
