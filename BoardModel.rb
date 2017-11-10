@@ -102,10 +102,10 @@ class FanaronaBoardModel
             end
         end
         #Some code to test if the stones are set properly
-        for stone in @stones
-            puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
-            " Column: " + stone.column.to_s + "\n\n"
-        end
+        #for stone in @stones
+        #    puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
+        #    " Column: " + stone.column.to_s + "\n\n"
+        #end
     end
 end
 
