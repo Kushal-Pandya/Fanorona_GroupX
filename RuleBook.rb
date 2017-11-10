@@ -1,5 +1,10 @@
 require_relative "MoveOutcome"
 
+
+#
+# RuleBook class validates selections, moves and captures
+# Needed to add 3 additional methods from design
+#
 class RuleBook
     def initialize(stones)
         @stones = stones
@@ -15,8 +20,6 @@ class RuleBook
         return MoveOutcome::Valid_selection
     end
 
-    # Dont know if I'm also supposed to be checking for a valid capture
-    # => inside validate_move() as technically it is a move
     def validate_move(srcRow, srcColumn, destRow, destColumn)
 
         #check first if user is not moving to occupied space
@@ -33,6 +36,7 @@ class RuleBook
         return MoveOutcome::Valid_move
     end
 
+    # This also checks if the move to capture was also valid
     def validate_capture(srcRow, srcColumn, destRow, destColumn, userColour)
 
         # if columns are the same then stone has moved left or right
@@ -58,8 +62,6 @@ class RuleBook
                 end
             end
         end
-
-        ## STILL NEED TO IMPLEMENT THE STRONG INTERSECTION OF VALIDATING CAPTURE
 
         # If its a strong intersection, need to check diagonally too
         if (self.class.is_strong_intersection?(srcRow, srcColumn))
@@ -105,6 +107,7 @@ class RuleBook
         return MoveOutcome::Invalid_capture
     end
 
+    # get_stone method copied verbatim from BoardModel class
     def self.get_stone(row, column)
         for stone in @stones
             if(stone.row == row && stone.column == column)
@@ -154,7 +157,7 @@ class RuleBook
         end
     end
 
-    # Determine if intersection is strong or weak 
+    # Determine if intersection is strong or weak by checking parity
     def self.is_strong_intersection?(row, column)
         return((row+column).even?)
     end
