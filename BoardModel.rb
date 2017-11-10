@@ -21,6 +21,7 @@ class FanaronaBoardModel
         @select_stone = nil
         reset_stones()
     end
+    
     def get_stone(row, column)
         for stone in @stones
             if(stone.row == row && stone.column == column)
@@ -29,6 +30,7 @@ class FanaronaBoardModel
         end
         return nil
     end
+    
     def delete_stone(row, column)
         for stone in @stones
             if(stone.row == row && stone.column == column)
@@ -36,6 +38,7 @@ class FanaronaBoardModel
             end
         end
     end
+    
     def update_stone_in_list(row1, col1, row2, col2)
         for stone in @stones
             if(stone.row == row1 && stone.column == col1)
@@ -43,34 +46,34 @@ class FanaronaBoardModel
             end
         end
     end
+    
     def select_stone(row, column)
-        outcome = rules.validateSelection(row, column)
-        
-        if(outcome == MoveOutcome::Valid_selection)
+        if(@rules.validateSelection(row, column) == MoveOutcome::Valid_selection)
             @select_stone = get_stone(row, column)
-        else    
-            @select_stone = nil
-        return outcome
+            return MoveOutcome::Valid_selection
+        end    
+        return MoveOutcome::Invalid_selection
     end
+    
     def move_stone(row, column)
-        outcome = rules.validate_move(row, column)
-        
-        if(outcome == MoveOutcome::Valid_move)
+        if(@rules.validate_move(row, column) == MoveOutcome::Valid_move)
             update_stone_in_list(@select_stone.row, @select_stone.column, row, column)
             @select_stone = nil
+            return MoveOutcome::Valid_move
         end
-        return outcome
+        return MoveOutcome::Invalid_move
     end
+    
     def capture_stone(row, column)
-        outcome = rules.validate_capture(row, column)
-        
-        if(outcome == MoveOutcome::Valid_capture)
+        if(@rules.validate_capture(row, column) == MoveOutcome::Valid_capture)
             delete_stone(row, column)
             update_stone_in_list(@select_stone.row, @select_stone.column, row, column)
             @select_stone = nil
+            return MoveOutcome::Valid_capture
         end
-        return outcome
+        return MoveOutcome::Invalid_capture
     end
+    
     def reset_stones()
         middle = (@rows / 2) - 1
         
@@ -103,7 +106,7 @@ class FanaronaBoardModel
         end
         #Some code to test if the stones are set properly
         #for stone in @stones
-        #    puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
+        #   puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
         #    " Column: " + stone.column.to_s + "\n\n"
         #end
     end
@@ -111,5 +114,3 @@ end
 
 new_obj = FanaronaBoardModel.new(5,9, nil)
 #thing = new_obj.get_stone(1, 4)
-
-#puts thing.colour.to_s + " " + thing.row.to_s + " " + thing.column.to_s
