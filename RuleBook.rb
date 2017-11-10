@@ -3,6 +3,7 @@ require_relative "MoveOutcome"
 
 #
 # RuleBook class validates selections, moves and captures
+# => Basically acts like the Fanorona rulebook
 # Needed to add 3 additional methods from design
 #
 class RuleBook
