@@ -25,7 +25,7 @@ class Game
    
    def play()
 	  result = @controller.take_turn()
-	  while result == MoveOutcome::Win do
+	  while result == MoveOutcome::Turn_over do
 	     if @controller == p1Controller
 		    @controller = p2Controller
 		 else
