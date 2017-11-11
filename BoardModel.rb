@@ -22,9 +22,9 @@ class FanaronaBoardModel
     end
     def select_stone(row, column)
         if( (@select_stone = get_stone(row, column)) == nil ||
-            
             @rules.validate_selection(row, column, @select_stone.colour) ==
             MoveOutcome::Valid_selection)
+            
             return MoveOutcome::Invalid_selection
         end
         return MoveOutcome::Valid_selection
@@ -77,8 +77,6 @@ class FanaronaBoardModel
             x_bound = 0
         end
         
-        current_colr = nil
-        next_colr = nil
         #two increments ahead, so that the first space it checks is the next space
         #after the move. Very important
         #also, if x or y increment are 0, makes an array with 8 of the same number
