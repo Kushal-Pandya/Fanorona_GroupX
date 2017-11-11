@@ -18,7 +18,7 @@ class BoardModel
     end
     
     def get_stone(row, column)
-        return @stones.find{ |stone| stone.row == row && stone.column == column}
+        return @stones.find{|stone| stone.row == row && stone.column == column}
     end
     
     def select_stone(row, column)
@@ -49,7 +49,8 @@ class BoardModel
     end
     
     def capture_stone(row, column)
-        if(@rules.validate_capture(@select_stone.row, @select_stone.column, 
+        if(get_stone(row, column) != nil ||
+            @rules.validate_capture(@select_stone.row, @select_stone.column, 
                 row, column, @select_stone.colour) == MoveOutcome::Invalid_capture)
             return MoveOutcome::Invalid_capture    
         end
