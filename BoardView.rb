@@ -52,9 +52,9 @@ class BoardView
                 if model.get_stone(i, j) == nil
                     stonesArr << '-'
                 elsif model.get_stone(i, j).colour == Colour::Black
-                    stonesArr << '2'
+                    stonesArr << 'B'
                 elsif model.get_stone(i, j).colour == Colour::White
-                    stonesArr << '1'
+                    stonesArr << 'W'
                 end
             end
         end
