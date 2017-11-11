@@ -102,9 +102,6 @@ class BoardModel
             end
             i = i + 1
         end
-        
-        puts x_values.to_s
-        puts y_values.to_s
 
         total_coord_pairs = (x_values.length < y_values.length) ?
             x_values.length : y_values.length
