@@ -18,42 +18,32 @@ class FanaronaBoardModel
     end
     
     def get_stone(row, column)
-        for stone in @stones
-            if(stone.row == row && stone.column == column)
-                return stone
-            end
-        end
-        return nil
+        return @stones.find{ |stone| stone.row == row && stone.column == column}
     end
-
     def select_stone(row, column)
-        @select_stone = get_stone(row, column)
-        if(@select_stone == nil)
-            return MoveOutcome::Invalid_selection
-        end
+        if( (@select_stone = get_stone(row, column)) == nil ||
             
-        if(@rules.validate_selection(row, column, @select_stone.colour) ==
+            @rules.validate_selection(row, column, @select_stone.colour) ==
             MoveOutcome::Valid_selection)
-            return MoveOutcome::Valid_selection
-        else
             return MoveOutcome::Invalid_selection
         end
+        return MoveOutcome::Valid_selection
     end
     
     def move_stone(row, column)
         if(@rules.validate_move(@select_stone.row, @select_stone.column,
-                row, column) == MoveOutcome::Valid_move)
-            
-            #update_list  
-            for stone in @stones
-                if(stone.row == @select_stone.row && stone.column == @select_stone.column)
-                    stone.move(row, column)
-                end
-            end    
-            @select_stone = nil
-            return MoveOutcome::Valid_move
+                row, column) == MoveOutcome::Invalid_move)
+            return Invalid_move
         end
-        return MoveOutcome::Invalid_move
+            
+        #update_list  
+        for stone in @stones
+            if(stone.row == @select_stone.row && stone.column == @select_stone.column)
+                stone.move(row, column)
+            end
+        end    
+        @select_stone = nil
+        return MoveOutcome::Valid_move
     end
     
     def capture_stone(row, column)
@@ -87,33 +77,40 @@ class FanaronaBoardModel
             x_bound = 0
         end
         
+        current_colr = nil
+        next_colr = nil
         #two increments ahead, so that the first space it checks is the next space
         #after the move. Very important
         #also, if x or y increment are 0, makes an array with 8 of the same number
         x_values = Array.new
+        y_values = Array.new
         i = x = @select_stone.column + (x_incr * 2)
-        until (x == x_bound + x_incr || i == 8)
+        y = @select_stone.row + (y_incr * 2)
+        
+        until (x == x_bound + x_incr ||
+            y == y_bound + y_incr || i == 8)
+            
             x_values.push(x)
             x = x + x_incr
-            i = i + 1
-        end 
-
-        y_values = Array.new
-        j = y = @select_stone.row + (y_incr * 2)
-        until (j == y_bound + y_incr || j == 8)
             y_values.push(y)
             y = y + y_incr
-            j = j + 1
+            
+            next_stone = get_stone(y, x)
+            if(next_stone != nil && next_stone.colour == @select_stone.colour)
+                break
+            end
+            i = i + 1
         end
 
-        for i in 0..x_values.length
-            #very powerful ruby function
-            @stones.delete_if{|stone| stone.row == y_values[i] && 
-                stone.column == x_values[i] &&
-                stone.colour != @select_stone.colour
-            }
-        end
-            
+        total_coord_pairs = (x_values.length < y_values.length) ?
+            x_values.length : y_values.length
+         
+        for j in 0..total_coord_pairs-1
+            @stones.delete_if{|stone| stone.row == y_values[j] &&
+                stone.column == x_values[j] && 
+                stone.colour != @select_stone.colour}
+        end   
+    
         for stone in @stones
             if(stone.row == @select_stone.row && stone.column == @select_stone.column)
                 stone.move(row, column)
@@ -159,11 +156,6 @@ class FanaronaBoardModel
                 @stones.push( Stone.new(Colour::White, i, j))
             end
         end
-        #Some code to test if the stones are set properly
-        #for stone in @stones
-        #   puts "Colour:" + stone.colour.to_s + " Row: " + stone.row.to_s +
-        #    " Column: " + stone.column.to_s + "\n\n"
-        #end
     end
 end
 
@@ -172,7 +164,7 @@ end
 #puts new_obj.select_stone(1,4).to_s
 #for stone in new_obj.stones
 #    if(stone)
-        #puts "colour:" + stone.colour.to_s + " row: " + stone.row.to_s + " col: " + stone.column.to_s
+#        puts "colour:" + stone.colour.to_s + " row: " + stone.row.to_s + " col: " + stone.column.to_s
 #    end
 #end 
 
