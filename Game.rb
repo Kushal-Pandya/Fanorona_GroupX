@@ -35,7 +35,7 @@ class Game
 		       p2Controller = PlayerController.new(@model, @view)
 		       @controller = p2Controller
 	        end
-	        @model BoardModel.new(rows,columns)
+	        @model = BoardModel.new(rows,columns)
 	  
    	        result = @controller.take_turn()
 	        while result == MoveOutcome::Turn_over do
