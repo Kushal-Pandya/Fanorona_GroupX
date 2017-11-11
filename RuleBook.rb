@@ -44,21 +44,22 @@ class RuleBook
         # this is for weak intersection
         if (srcColumn == destColumn)
             if (srcRow+1 == destRow || srcRow-1 == destRow)
+
                 # checking towards stone
-                if (  get_stone(destRow+1, destColumn).colour != userColour)
+                if (get_stone(destRow+1, destColumn) != nil && get_stone(destRow+1, destColumn).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (  get_stone(destRow-1, destColumn).colour != userColour)
+                elsif (get_stone(destRow-1, destColumn) != nil && get_stone(destRow-1, destColumn).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             end
         elsif (srcRow == destRow) #moved up or down
             if (srcColumn+1 == destColumn || srcColumn-1 == destColumn)
                 # checking towards stone
-                if (  get_stone(destRow, destColumn+1).colour != userColour)
+                if (get_stone(destRow, destColumn+1) != nil && get_stone(destRow, destColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (  get_stone(destRow, destColumn-1).colour != userColour)
+                elsif (get_stone(destRow, destColumn-1) != nil && get_stone(destRow, destColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             end
@@ -70,42 +71,42 @@ class RuleBook
             # check if stone has moved top-right
             if (srcRow+1 == destRow && srcColumn+1 == destColumn)
                 #check toward stone
-                if (  get_stone(destRow+1, destColumn+1).colour != userColour)
+                if (get_stone(destRow+1, destColumn+1) != nil && get_stone(destRow+1, destColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (  get_stone(srcRow-1, srcColumn-1).colour != userColour)
+                elsif (get_stone(srcRow-1, srcColumn-1) != nil && get_stone(srcRow-1, srcColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             # check if stone has moved bottom-right
             elsif (srcRow+1 == destRow && srcColumn-1 == destColumn)
                 #check toward stone
-                if (  get_stone(destRow+1, destColumn-1).colour != userColour)
+                if (get_stone(destRow+1, destColumn-1) != nil && get_stone(destRow+1, destColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (  get_stone(srcRow-1, srcColumn+1).colour != userColour)
+                elsif (get_stone(srcRow-1, srcColumn+1) != nil && get_stone(srcRow-1, srcColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             # check if stone has moved bottom-left
             elsif (srcRow-1 == destRow && srcColumn-1 == destColumn)
                 #check toward stone
-                if (  get_stone(destRow-1, destColumn-1).colour != userColour)
+                if (get_stone(destRow-1, destColumn-1) != nil && get_stone(destRow-1, destColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (  get_stone(srcRow+1, srcColumn+1).colour != userColour)
+                elsif (get_stone(srcRow+1, srcColumn+1) != nil && get_stone(srcRow+1, srcColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             # check if stone has moved top-left
             elsif (srcRow-1 == destRow && srcColumn+1 == destColumn)
                 #check toward stone
-                if (  get_stone(destRow-1, destColumn+1).colour != userColour)
+                if (get_stone(destRow-1, destColumn+1) != nil && get_stone(destRow-1, destColumn+1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 # checking away stone
-                elsif (  get_stone(srcRow+1, srcColumn-1).colour != userColour)
+                elsif (get_stone(srcRow+1, srcColumn-1) != nil && get_stone(srcRow+1, srcColumn-1).colour != userColour)
                     return MoveOutcome::Valid_capture
                 end
             end
 
-   end
+        end
         return MoveOutcome::Invalid_capture
     end
 
