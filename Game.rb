@@ -13,7 +13,7 @@ class Game
    
    
    def play()
-	  @view = Boardview.new()
+	  @view = BoardView.new()
 	  mainMenuIn = nil
 	  rows = 5
 	  columns = 9
@@ -24,6 +24,7 @@ class Game
 	  
 	     # selected to play the game
 	     if mainMenuIn == "1"
+		    @model = BoardModel.new(rows,columns)
 		    @view.display_colour_selection()
 	        colourIn = @view.prompt_text()
 	        if colourIn == "1"
