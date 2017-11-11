@@ -7,26 +7,39 @@ class PlayerController
       @view = view
    end
    def take_turn()
-    sel_loc = @view.prompt_location
-    selectResult = @model.select_stone(sel_loc[0], sel_loc[1])
-    
-    while selectResult != MoveOutcome::Valid_selection do
-        puts "select"
-        sel_loc = @view.prompt_location
-        selectResult = @model.select_stone(sel_loc[0], sel_loc[1])
-    end
-
-    dest_loc = @view.prompt_location
-    selectCapture = @model.capture_stone(dest_loc[0], dest_loc[1])
-    selectMove = @model.move_stone(dest_loc[0], dest_loc[1])
-    while(selectCapture != MoveOutcome::Valid_capture && 
+    @view.display_board(@model)
+    sel_loc = nil
+    selectResult = nil
+    dest_loc = nil
+    selectCapture = nil
+    selectMove = nil
+        
+    while((selectCapture != MoveOutcome::Valid_capture && selectCapture != MoveOutcome::Win) && 
         selectMove != MoveOutcome::Valid_move) do
-        puts "go to"
+                
+        sel_loc = nil
+        selectResult = nil
+        dest_loc = nil
+        selectCapture = nil
+        selectMove = nil
+    
+        while selectResult != MoveOutcome::Valid_selection do
+            puts "Select stone"
+            sel_loc = @view.prompt_location
+            selectResult = @model.select_stone(sel_loc[0], sel_loc[1])
+        end
+
+        puts "Enter destination space"
         dest_loc = @view.prompt_location
         selectCapture = @model.capture_stone(dest_loc[0], dest_loc[1])
         selectMove = @model.move_stone(dest_loc[0], dest_loc[1])
     end
-
-    @view.display_board(@model)
+    if selectCapture == MoveOutcome::Valid_capture
+        return selectCapture
+    elsif selectMove == MoveOutcome::Valid_move
+        return selectMove
+    else
+        return MoveOutcome::Invalid_move
+    end
    end
 end
