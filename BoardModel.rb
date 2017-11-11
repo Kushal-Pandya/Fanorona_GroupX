@@ -3,7 +3,7 @@ require_relative "Colour"
 require_relative "Stone"
 require_relative "RuleBook"
 
-class FanaronaBoardModel
+class BoardModel
     attr_accessor :rows, :columns, :stones
     #will make a board of any size, but has to deal with boards of size, 3x3,
     #5x5 or 5x9 (5 rows, 9 columns).
@@ -20,10 +20,11 @@ class FanaronaBoardModel
     def get_stone(row, column)
         return @stones.find{ |stone| stone.row == row && stone.column == column}
     end
+    
     def select_stone(row, column)
         if( (@select_stone = get_stone(row, column)) == nil ||
             @rules.validate_selection(row, column, @select_stone.colour) ==
-            MoveOutcome::Valid_selection)
+            MoveOutcome::Invalid_selection)
             
             return MoveOutcome::Invalid_selection
         end
@@ -31,9 +32,10 @@ class FanaronaBoardModel
     end
     
     def move_stone(row, column)
-        if(@rules.validate_move(@select_stone.row, @select_stone.column,
+        if(@select_stone == nil ||
+            @rules.validate_move(@select_stone.row, @select_stone.column,
                 row, column) == MoveOutcome::Invalid_move)
-            return Invalid_move
+            return MoveOutcome::Invalid_move
         end
             
         #update_list  
@@ -155,6 +157,9 @@ class FanaronaBoardModel
             end
         end
     end
+end
+
+class FanronaBoardModel < BoardModel
 end
 
 #new_obj = FanaronaBoardModel.new(5,9)
