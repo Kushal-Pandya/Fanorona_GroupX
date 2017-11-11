@@ -118,7 +118,16 @@ class BoardModel
         end    
             
         @select_stone = nil
-        return MoveOutcome::Valid_capture
+        
+        stones_p1 = 0 
+        stones_p2 = 0
+        
+        for stone in @stones
+            (stone.colour == Colour::White) ? stones_p1 +=1 : stones_p2 +=1
+        end
+        
+        return (stones_p1 == 0 || stones_p2 == 0) ? MoveOutcome::Win :
+            MoveOutcome::Valid_capture
     end
     
     def reset_stones()
