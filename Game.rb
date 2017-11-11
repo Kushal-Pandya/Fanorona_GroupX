@@ -2,6 +2,7 @@ require_relative "PlayerController"
 require_relative "BoardView"
 require_relative "BoardModel"
 require_relative "MoveOutcome"
+require_relative "Colour"
 class Game
    def initialize()
    	puts "here"
@@ -47,6 +48,12 @@ class Game
 		       end
 		       result = @controller.take_turn()
 	        end
+			if result == MoveOutcome::Win
+			   if @controller.
+			   @view.message("Game over. The winner is the person who performed the last move.")
+			   @view.message("Enter any text to return to the main menu.")
+			   @view.prompt_text()
+			end
 		 # selected to change the board size
 		 elsif mainMenuIn== "2"
 		    sizeCheck = "invalid"
