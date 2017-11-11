@@ -56,8 +56,8 @@ class BoardModel
         end
         
         #by default is 1, so that a default increment of 0 never reaches it
-        y_bound = 1
-        x_bound = 1
+        y_bound = 10
+        x_bound = 10
         y_diff = @select_stone.row - row
         x_diff = @select_stone.column - column
         y_incr = 0
@@ -102,6 +102,9 @@ class BoardModel
             end
             i = i + 1
         end
+        
+        puts x_values.to_s
+        puts y_values.to_s
 
         total_coord_pairs = (x_values.length < y_values.length) ?
             x_values.length : y_values.length
