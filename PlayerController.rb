@@ -7,8 +7,6 @@ class PlayerController
       @view = view
    end
    def take_turn()
-    text = @view.prompt_text
-    
     sel_loc = @view.prompt_location
     selectResult = @model.select_stone(sel_loc[0], sel_loc[1])
     
@@ -17,8 +15,7 @@ class PlayerController
         sel_loc = @view.prompt_location
         selectResult = @model.select_stone(sel_loc[0], sel_loc[1])
     end
-    
-    
+
     dest_loc = @view.prompt_location
     selectCapture = @model.capture_stone(dest_loc[0], dest_loc[1])
     selectMove = @model.move_stone(dest_loc[0], dest_loc[1])
