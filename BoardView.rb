@@ -1,3 +1,4 @@
+require_relative "Colour"
 class BoardView
     def initialize()
         @subject = nil
@@ -9,9 +10,9 @@ class BoardView
     end
     def prompt_location()
         puts "Enter row"
-        row = Integer(gets.chomp)
+        row = Integer(gets.chomp.to_i)
         puts "Enter column"
-        col = Integer(gets.chomp)
+        col = Integer(gets.chomp.to_i)
         arr = [row, col]
     end
     def message(text)
@@ -42,19 +43,18 @@ class BoardView
         puts "(Fanoron-Telo), and 5x5 board (Fanoron-Dimy)."
     end
     def display_board(model)
-        currentBoard = model
         rows = model.rows
         columns = model.columns
         stonesArr = []
-        
+
         for i in 0..rows-1
             for j in 0..columns-1
-                if model.get_stone(i, j).colour == white
-                    stonesArr << 'w'
-                elsif model.get_stone(i, j).colour == black
-                    stonesArr << 'b'
-                elsif model.get_stone(i, j) == nil
+                if model.get_stone(i, j) == nil
                     stonesArr << '-'
+                elsif model.get_stone(i, j).colour == Colour::Black
+                    stonesArr << '2'
+                elsif model.get_stone(i, j).colour == Colour::White
+                    stonesArr << '1'
                 end
             end
         end
@@ -115,4 +115,3 @@ class BoardView
         puts "Make your selection now! (1-2)"
     end
 end
-
