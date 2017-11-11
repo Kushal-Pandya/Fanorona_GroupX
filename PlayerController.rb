@@ -13,16 +13,16 @@ class PlayerController
     dest_loc = nil
     selectCapture = nil
     selectMove = nil
-        
-    while((selectCapture != MoveOutcome::Valid_capture && selectCapture != MoveOutcome::Win) && 
+
+    while((selectCapture != MoveOutcome::Valid_capture && selectCapture != MoveOutcome::Win) &&
         selectMove != MoveOutcome::Valid_move) do
-                
+
         sel_loc = nil
         selectResult = nil
         dest_loc = nil
         selectCapture = nil
         selectMove = nil
-    
+
         while selectResult != MoveOutcome::Valid_selection do
             puts "Select stone"
             sel_loc = @view.prompt_location
@@ -35,9 +35,9 @@ class PlayerController
         selectMove = @model.move_stone(dest_loc[0], dest_loc[1])
     end
     if selectCapture == MoveOutcome::Valid_capture
-        return selectCapture
+        return MoveOutcome::Turn_over
     elsif selectMove == MoveOutcome::Valid_move
-        return selectMove
+        return MoveOutcome::Turn_over
     else
         return MoveOutcome::Invalid_move
     end
