@@ -5,9 +5,16 @@ require_relative "MoveOutcome"
 class Game
    def initialize()
    	puts "here"
-      @view = BoardView.new()
-	  @model = BoardModel.new(5,9)
+      @view = nil
+	  @model = nil
+	  @controller = nil
 	  
+   end
+   
+   
+   def play()
+      @model BoardModel.new(5,9)
+	  @view = Boardview.new()
 	  @view.display_colour_selection()
 	  colourIn = @view.prompt_text()
 	  if colourIn == "1"
@@ -19,12 +26,7 @@ class Game
 		 p2Controller = PlayerController.new(@model, @view)
 		 @controller = p2Controller
 	  end
-	  
-   end
-   
-   
-   def play()
-	  result = @controller.take_turn()
+   	  result = @controller.take_turn()
 	  while result == MoveOutcome::Turn_over do
 	     if @controller == p1Controller
 		    @controller = p2Controller
