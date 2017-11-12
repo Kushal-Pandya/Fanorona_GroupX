@@ -13,4 +13,6 @@ limitations:
     Does not prevent player 1 from moving player 2's pieces (just like
     a physical board game would not).
     Does not keep a score of wins for either player
+    You cannot view the menu during a game of Fanrona, you can only do this
+        before a game has started.
     
