@@ -49,7 +49,6 @@ class Game
 		       result = @controller.take_turn()
 	        end
 			if result == MoveOutcome::Win
-			   if @controller.
 			   @view.message("Game over. The winner is the person who performed the last move.")
 			   @view.message("Enter any text to return to the main menu.")
 			   @view.prompt_text()
