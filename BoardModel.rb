@@ -97,6 +97,9 @@ class BoardModel
             y = y + y_incr
             
             next_stone = get_stone(y, x)
+            if(next_stone == nil)
+                break
+            end
             if(next_stone != nil && next_stone.colour == @select_stone.colour)
                 break
             end
