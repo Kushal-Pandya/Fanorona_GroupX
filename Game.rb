@@ -5,7 +5,6 @@ require_relative "MoveOutcome"
 require_relative "Colour"
 class Game
    def initialize()
-   	puts "here"
       @view = nil
 	  @model = nil
 	  @controller = nil
@@ -78,5 +77,4 @@ class Game
 end
 
 foo = Game.new()
-puts " Iwan to play now"
 foo.play()
