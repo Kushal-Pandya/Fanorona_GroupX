@@ -1,5 +1,5 @@
-# Fanarona_GroupX
-A Fanarona board game implementation by Group X for CIS 3260 
+# Fanorona by GroupX
+A Fanorona board game implementation by Group X for CIS 3260 
 
 how to run: 
     1. Download the compressed folder into your directory 
